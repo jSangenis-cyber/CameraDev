@@ -1,9 +1,8 @@
-```
-Paste this inside:
-```
 __pycache__/
-*.pt
 *.pyc
+*.pt
 ai_env/
 yolov8n_ncnn_model/
 known_faces/
+detections/
+.env
