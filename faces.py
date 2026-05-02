@@ -31,13 +31,21 @@ def has_whitelist() -> bool:
     return bool(_encodings)
 
 
+def _sufficient_face(location, min_ratio: float = 0.3, min_area: int = 2500) -> bool:
+    """Return True if the face box looks like a head (even sideways), not just an ear."""
+    top, right, bottom, left = location
+    width, height = right - left, bottom - top
+    return height > 0 and (width / height) >= min_ratio and (width * height) >= min_area
+
+
 def is_known(frame_rgb) -> bool | None:
     """
     Returns True  if a recognised face is found in the frame.
     Returns False if an unrecognised face is found.
     Returns None  if no face is detected at all (e.g. person seen from behind).
     """
-    locations = face_recognition.face_locations(frame_rgb)
+    all_locations = face_recognition.face_locations(frame_rgb)
+    locations = [loc for loc in all_locations if _sufficient_face(loc)]
     if not locations:
         return None
     for enc in face_recognition.face_encodings(frame_rgb, locations):

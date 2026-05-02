@@ -30,8 +30,8 @@ def check(frame_rgb) -> None:
         if result is True:
             return  # known person
         if result is None:
-            return  # person detected but no face visible — don't false-alert
-        # result is False → unknown face
+            return  # no head visible (from behind, or only an ear) — don't alert
+        # result is False: unrecognised face/head confirmed
     # else: no whitelist configured → alert on any person
 
     _trigger(frame_rgb, now)
