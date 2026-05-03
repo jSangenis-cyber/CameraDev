@@ -41,17 +41,19 @@ def _capture_loop(cam: Picamera2, model: YOLO) -> None:
         results       = model(frame_rgb, verbose=False)
         annotated_bgr = results[0].plot()
 
-        person_seen = any(
-            results[0].names[int(b.cls[0])] == "person"
-            for b in results[0].boxes
+        person_conf = max(
+            (float(b.conf[0]) for b in results[0].boxes
+             if results[0].names[int(b.cls[0])] == "person"),
+            default=0.0,
         )
+        person_seen = person_conf > 0.0
 
         now = time.time()
         if person_seen and now - _check_spawned > CHECK_INTERVAL:
             _check_spawned = now
             threading.Thread(
                 target=alerts.check,
-                args=(frame_rgb.copy(),),
+                args=(frame_rgb.copy(), annotated_bgr.copy(), person_conf),
                 daemon=True,
             ).start()
 

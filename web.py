@@ -26,7 +26,7 @@ def index():
       h1   { color: #fff; font-size: 20px; margin-bottom: 12px; }
       .badge { background: #222; color: #0f0; font-size: 12px;
                padding: 4px 12px; border-radius: 20px; margin-bottom: 16px; }
-      .stream-container { width: 100%; max-width: 640px; }
+      .stream-container { width: 100%; max-width: 1280px; }
       .stream-container img { display: block; width: 100%; height: auto;
                               border: 2px solid #333; border-radius: 8px; }
       .footer { color: #555; font-size: 12px; margin-top: 12px; }
